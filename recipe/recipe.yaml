@@ -178,6 +178,9 @@ requirements:
     else:
     - torchaudio
     - torchvision
+    - if: x86_64
+      then:
+      - triton ==3.2.0
   run_constraints:
   - if: use_cuda
     then:
