@@ -192,7 +192,7 @@ tests:
 about:
   homepage: https://github.com/vllm-project/vllm
   summary: A high-throughput and memory-efficient inference and serving engine for LLMs
-  description:  Easy, fast, and cheap LLM serving for everyone
+  description: Easy, fast, and cheap LLM serving for everyone
   license: Apache-2.0 AND BSD-3-Clause
   license_file:
   - vllm/LICENSE
