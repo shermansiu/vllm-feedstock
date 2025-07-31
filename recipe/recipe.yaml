@@ -47,6 +47,9 @@ build:
   skip:
     - win
     - osx and x86_64
+    # Cannot find Python.h even though it's in $PREFIX/include/python<version>/Python.h
+    # https://github.com/vllm-project/vllm/issues/5671
+    - aarch64
     # conda-forge torchaudio dropped support for Python 3.9 (llvmlite fix only available for Python >=3.10)
     # - match(python, "<3.10")
     - match(python, "!=3.12")  # Until the build works
