@@ -1,7 +1,6 @@
 context:
   version: 0.8.3
   pytorch_version: 2.6.0
-  python_version: ${{ python.split(" ")[0].rsplit(".", 1)[0] }}
   use_cuda: ${{ cuda_compiler_version != "None" }}
   vllm_target_device: ${{ "cuda" if use_cuda else "cpu" }}
   is_cross_compiling: ${{ build_platform != target_platform }}
