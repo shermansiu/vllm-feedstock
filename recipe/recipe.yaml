@@ -1,6 +1,7 @@
 context:
   version: 0.8.3
   pytorch_version: 2.6.0
+  python_version: ${{ python.split(" ")[0].rsplit(".", 1)[0] }}
   use_cuda: ${{ cuda_compiler_version != "None" }}
   vllm_target_device: ${{ "cuda" if use_cuda else "cpu" }}
   is_cross_compiling: ${{ build_platform != target_platform }}
@@ -29,16 +30,16 @@ source:
 
 build:
   number: 2
-  script: |
-    sed -i.bak 's/set(TORCH_SUPPORTED_VERSION_CUDA "2.4.0")/set(TORCH_SUPPORTED_VERSION_CUDA "${{ pytorch_version }}")/g' flash-attention/CMakeLists.txt
-    export VLLM_FLASH_ATTN_SRC_DIR=$SRC_DIR/flash-attention
-    cd vllm
-    python use_existing_torch.py
-    mkdir -p $SRC_DIR/vllm/third_party/NVTX/c
-    ln -s $PREFIX/include $SRC_DIR/vllm/third_party/NVTX/c/include
-    export VERBOSE=1
-    export VLLM_TARGET_DEVICE=${{ vllm_target_device }}
-    ${{ PYTHON }} -m pip install . -vv --no-build-isolation --no-deps
+  script:
+    - sed -i.bak 's/set(TORCH_SUPPORTED_VERSION_CUDA "2.4.0")/set(TORCH_SUPPORTED_VERSION_CUDA "${{ pytorch_version }}")/g' flash-attention/CMakeLists.txt
+    - export VLLM_FLASH_ATTN_SRC_DIR=$SRC_DIR/flash-attention
+    - cd vllm
+    - python use_existing_torch.py
+    - mkdir -p $SRC_DIR/vllm/third_party/NVTX/c
+    - ln -s $PREFIX/include $SRC_DIR/vllm/third_party/NVTX/c/include
+    - export VERBOSE=1
+    - export VLLM_TARGET_DEVICE=${{ vllm_target_device }}
+    - ${{ PYTHON }} -m pip install . -vv --no-build-isolation --no-deps
 
   python:
     entry_points:
