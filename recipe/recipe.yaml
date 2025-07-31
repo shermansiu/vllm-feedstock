@@ -38,9 +38,6 @@ build:
     - ln -s $PREFIX/include $SRC_DIR/vllm/third_party/NVTX/c/include
     - export VERBOSE=1
     - export VLLM_TARGET_DEVICE=${{ vllm_target_device }}
-    - if: aarch64
-      then:
-      - ln -s $PYTHON_INCLUDE_DIR/Python.h $PYTHON_INCLUDE_DIR/python.h
     - ${{ PYTHON }} -m pip install . -vv --no-build-isolation --no-deps
 
   python:
