@@ -176,7 +176,9 @@ tests:
     - if: linux and use_cuda
       then:
       - vllm.vllm_flash_attn
-    pip_check: false  # Disable until opentelemetry-prometheus-exporter has fixed constraints
+    # Disable until opentelemetry-prometheus-exporter has fixed constraints
+    # https://github.com/conda-forge/opentelemetry-exporter-prometheus-feedstock/pull/24
+    pip_check: false
 - script:
   - vllm --version
 - script:
