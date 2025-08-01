@@ -41,6 +41,7 @@ build:
     - ln -s $PREFIX/include $SRC_DIR/vllm/third_party/NVTX/c/include
     - export VERBOSE=1
     - export VLLM_TARGET_DEVICE=${{ vllm_target_device }}
+    # CMake is unable to automatically locate the Python include dir for aarch64 for some reason
     - if: aarch64
       then:
       - export CMAKE_ARGS="$CMAKE_ARGS -DPython_INCLUDE_DIR="$(python -c 'import sysconfig; print(sysconfig.get_path("include"))')""
