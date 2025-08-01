@@ -28,17 +28,17 @@ source:
   target_directory: flash-attention
 
 build:
-  number: 1
-  script: |
-    sed -i.bak 's/set(TORCH_SUPPORTED_VERSION_CUDA "2.4.0")/set(TORCH_SUPPORTED_VERSION_CUDA "${{ pytorch_version }}")/g' flash-attention/CMakeLists.txt
-    export VLLM_FLASH_ATTN_SRC_DIR=$SRC_DIR/flash-attention
-    cd vllm
-    python use_existing_torch.py
-    mkdir -p $SRC_DIR/vllm/third_party/NVTX/c
-    ln -s $PREFIX/include $SRC_DIR/vllm/third_party/NVTX/c/include
-    export VERBOSE=1
-    export VLLM_TARGET_DEVICE=${{ vllm_target_device }}
-    ${{ PYTHON }} -m pip install . -vv --no-build-isolation --no-deps
+  number: 2
+  script:
+    - sed -i.bak 's/set(TORCH_SUPPORTED_VERSION_CUDA "2.4.0")/set(TORCH_SUPPORTED_VERSION_CUDA "${{ pytorch_version }}")/g' flash-attention/CMakeLists.txt
+    - export VLLM_FLASH_ATTN_SRC_DIR=$SRC_DIR/flash-attention
+    - cd vllm
+    - python use_existing_torch.py
+    - mkdir -p $SRC_DIR/vllm/third_party/NVTX/c
+    - ln -s $PREFIX/include $SRC_DIR/vllm/third_party/NVTX/c/include
+    - export VERBOSE=1
+    - export VLLM_TARGET_DEVICE=${{ vllm_target_device }}
+    - ${{ PYTHON }} -m pip install . -vv --no-build-isolation --no-deps
 
   python:
     entry_points:
@@ -48,7 +48,8 @@ build:
     - win
     - osx and x86_64
     # conda-forge torchaudio dropped support for Python 3.9 (llvmlite fix only available for Python >=3.10)
-    - match(python, "<3.10")
+    # - match(python, "<3.10")
+    - match(python, "!=3.12")  # Until the build works
 
 requirements:
   build:
@@ -140,7 +141,7 @@ requirements:
   - watchfiles
   - if: x86_64 or arm64 or aarch64
     then:
-    - llguidance >=0.7.9,< 0.8.0
+    - llguidance >=0.7.9,<0.8.0
   - if: x86_64 or aarch64
     then:
     - xgrammar ==0.1.17
@@ -150,16 +151,13 @@ requirements:
     - setuptools >=74.1.1
   - if: use_cuda
     then:
-    # Numba v0.61 doesn't support Python 3.9. Required for N-gram speculative decoding
-    # Requirements taken from https://github.com/vllm-project/vllm/blob/296c6572dd1f76b31b93be19e550790afcfb8843/requirements/cuda.txt#L4-L5
-    # Also, because conda-forge's torchaudio dropped support for Python 3.9, we don't include the conditional numba 0.60 run requirement.
     - numba ==0.61
     - ray-cgraph >=2.43.0,!=2.44
     - torchaudio ==${{ pytorch_version }}
     - torchvision ==0.21.0
     - if: linux64
       then:
-      - xformers ==0.0.29.post2  # platform_system == "Linux" and platform_machine == "x86_64"
+      - xformers ==0.0.29.post2
     else:
     - torchaudio
     - torchvision
@@ -194,7 +192,7 @@ tests:
 about:
   homepage: https://github.com/vllm-project/vllm
   summary: A high-throughput and memory-efficient inference and serving engine for LLMs
-  description:  Easy, fast, and cheap LLM serving for everyone
+  description: Easy, fast, and cheap LLM serving for everyone
   license: Apache-2.0 AND BSD-3-Clause
   license_file:
   - vllm/LICENSE
