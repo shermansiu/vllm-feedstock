@@ -208,7 +208,7 @@ tests:
       then:
         - vllm --version
   - script:
-    # Pick an arbitrary test to run: some of the other ones rely on a bunch of external packages
+      # Pick an arbitrary test to run: some of the other ones rely on a bunch of external packages
       - pytest ./vllm/tests/core/test_scheduler.py
     requirements:
       run:
