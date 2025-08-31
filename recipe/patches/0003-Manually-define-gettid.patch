@@ -1,7 +1,7 @@
 From 8135446bc484b8edda531c1f81fd0ef9c4d314be Mon Sep 17 00:00:00 2001
 From: Sherman Siu <s8siu@uwaterloo.ca>
 Date: Mon, 21 Jul 2025 05:05:36 -0400
-Subject: [PATCH 3/5] Manually define gettid
+Subject: [PATCH 3/6] Manually define gettid
 
 - `gettid` is not defined by default until glibc 2.30: see https://stackoverflow.com/questions/30680550/c-gettid-was-not-declared-in-this-scope for details
 ---

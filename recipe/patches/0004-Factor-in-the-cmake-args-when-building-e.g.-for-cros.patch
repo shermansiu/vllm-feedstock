@@ -1,7 +1,7 @@
 From 5e1f64fe4ca4a4a6fc9e0f2adcad3d04469b74dd Mon Sep 17 00:00:00 2001
 From: Sherman Siu <s8siu@uwaterloo.ca>
 Date: Mon, 21 Jul 2025 05:08:38 -0400
-Subject: [PATCH 4/5] Factor in the cmake args when building, e.g. for
+Subject: [PATCH 4/6] Factor in the cmake args when building, e.g. for
  cross-compilation
 
 ---

@@ -1,18 +1,18 @@
-From 49056e431b67064eec4f284a301c92ab26a9dbd8 Mon Sep 17 00:00:00 2001
+From 0edd58495c6962b1f478a7040bbad7f18e2e20f8 Mon Sep 17 00:00:00 2001
 From: Sherman Siu <s8siu@uwaterloo.ca>
-Date: Fri, 1 Aug 2025 05:10:59 -0400
-Subject: [PATCH 5/5] Configure build to target aarch64 even though CMake finds
- x86_64 hardware
+Date: Sun, 31 Aug 2025 20:37:56 -0400
+Subject: [PATCH 5/6] Configure build to target aarch64 even though CMake finds
+  x86_64 hardware
 
 ---
  cmake/cpu_extension.cmake | 5 +++++
  1 file changed, 5 insertions(+)
 
 diff --git a/cmake/cpu_extension.cmake b/cmake/cpu_extension.cmake
-index fdc03a795..3142a1452 100644
+index fc7291972..c745e20c5 100644
 --- a/cmake/cpu_extension.cmake
 +++ b/cmake/cpu_extension.cmake
-@@ -85,6 +85,11 @@ else()
+@@ -83,6 +83,11 @@ else()
  endif()
  
  

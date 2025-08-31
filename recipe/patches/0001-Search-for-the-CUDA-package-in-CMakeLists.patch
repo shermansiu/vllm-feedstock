@@ -1,7 +1,7 @@
 From b4e6f75bcd35bfe2513be1a1c6c82c0720a08d8d Mon Sep 17 00:00:00 2001
 From: Sherman Siu <s8siu@uwaterloo.ca>
 Date: Mon, 21 Jul 2025 05:01:32 -0400
-Subject: [PATCH 1/5] Search for the CUDA package in CMakeLists
+Subject: [PATCH 1/6] Search for the CUDA package in CMakeLists
 
 ---
  CMakeLists.txt | 1 +
