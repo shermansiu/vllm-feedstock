@@ -1,8 +1,7 @@
 context:
   version: 0.9.2
   use_cuda: ${{ cuda_compiler_version != "None" }}
-  pytorch_version: ${{ "2.6.0" if not use_cuda and "x86_64" else "2.7.0" }}
-  vllm_flash_attn_version: 2.6.2
+  pytorch_version: 2.7.0
   vllm_target_device: ${{ "cuda" if use_cuda else "cpu" }}
   cuda_build_string: cuda_${{ cuda_compiler_version | version_to_buildstring }}
   string_prefix: ${{ cuda_build_string if cuda_compiler_version != "None" else "cpu_" }}
@@ -29,8 +28,8 @@ source:
     - patches/0005-Configure-build-to-target-aarch64-even-though-CMake-.patch
   target_directory: vllm
 # Needs to be vendored because vLLM uses a modified version of the flash attention primitives that supports KV-caching.
-- url: https://github.com/vllm-project/flash-attention/archive/refs/tags/v${{ vllm_flash_attn_version }}.tar.gz
-  sha256: 18667d78282a3355bdffed7af294e5bbe053db1b867a5ca84dae7cd4f1d73513
+- url: https://github.com/vllm-project/flash-attention/archive/a5dd03c1ebc5e4f56f3c9d3dc0436e9c582c978f.tar.gz
+  sha256: d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed
   target_directory: flash-attention
 
 build:

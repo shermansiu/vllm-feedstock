@@ -1,7 +1,7 @@
-From 9fe9a9d7e6dc4cf38e8b5c29f386d1b445c73af8 Mon Sep 17 00:00:00 2001
+From 8135446bc484b8edda531c1f81fd0ef9c4d314be Mon Sep 17 00:00:00 2001
 From: Sherman Siu <s8siu@uwaterloo.ca>
 Date: Mon, 21 Jul 2025 05:05:36 -0400
-Subject: [PATCH 3/4] Manually define gettid
+Subject: [PATCH 3/5] Manually define gettid
 
 - `gettid` is not defined by default until glibc 2.30: see https://stackoverflow.com/questions/30680550/c-gettid-was-not-declared-in-this-scope for details
 ---
@@ -9,10 +9,10 @@ Subject: [PATCH 3/4] Manually define gettid
  1 file changed, 3 insertions(+)
 
 diff --git a/csrc/cpu/utils.cpp b/csrc/cpu/utils.cpp
-index 79771ecd9..e21efc92a 100644
+index 02514edce..e605da905 100644
 --- a/csrc/cpu/utils.cpp
 +++ b/csrc/cpu/utils.cpp
-@@ -7,6 +7,9 @@
+@@ -12,6 +12,9 @@
  
  #include "cpu_types.hpp"
  
