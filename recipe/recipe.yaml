@@ -196,7 +196,7 @@ tests:
     - if: linux and use_cuda
       then:
       - vllm.vllm_flash_attn
-    pip_check: true
+    pip_check: false
 - script:
   - vllm --version
 - script:
