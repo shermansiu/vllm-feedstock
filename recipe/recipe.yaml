@@ -28,8 +28,8 @@ source:
     - patches/0005-Configure-build-to-target-aarch64-even-though-CMake-.patch
   target_directory: vllm
 # Needs to be vendored because vLLM uses a modified version of the flash attention primitives that supports KV-caching.
-- url: https://github.com/vllm-project/flash-attention/archive/a5dd03c1ebc5e4f56f3c9d3dc0436e9c582c978f.tar.gz
-  sha256: d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed
+- url: https://github.com/vllm-project/flash-attention/archive/1c2624e53c078854e0637ee566c72fe2107e75f4.tar.gz
+  sha256: cca19d7e53af08aa6d6f0c4fd9dd78d30314497e38fb03b1368b3d5a77ab4b5c
   target_directory: flash-attention
 
 build:
