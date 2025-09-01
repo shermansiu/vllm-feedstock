@@ -56,7 +56,9 @@ build:
     # CMake is unable to automatically locate the Python include dir for aarch64 for some reason
     - if: aarch64
       then:
-        - export CMAKE_ARGS="$CMAKE_ARGS -DPython_INCLUDE_DIR="$(python -c 'import sysconfig; print(sysconfig.get_path("include"))')""
+        - export CUDA_HOME="$BUILD_PREFIX/targets/sbsa-linux"
+        - export PATH=$PATH:$CUDA_HOME/nvvm/bin
+        - export CMAKE_ARGS="$CMAKE_ARGS -DPython_INCLUDE_DIR="$(python -c 'import sysconfig; print(sysconfig.get_path("include"))')" -DCUDAToolkit_ROOT=$CUDA_HOME -DCUDA_CUDART_LIBRARY=$CUDA_HOME/lib/libcudart.so"
     - ${{ PYTHON }} -m pip install . -vv --no-build-isolation --no-deps
 
   python:
@@ -68,7 +70,6 @@ build:
     - osx and x86_64
     # We don't have Python 3.13 support until https://github.com/vllm-project/vllm/commit/21dce80ea96bcf033d159c0f952fb274567b315c is released
     - match(python, ">=3.13")
-    - aarch64 and use_cuda  # Still have issues locating CUDA for the aarch64 build
     # - not use_cuda  # Just build CUDA for now
     # - match(python, "!=3.10")  # Until all the builds succeed
 
@@ -92,6 +93,9 @@ requirements:
         - if: use_cuda
           then:
             - pytorch * [build=cuda*]
+            - if: aarch64
+              then:
+                - libcublas-dev
   host:
     - python
     - jinja2 >=3.1.6
