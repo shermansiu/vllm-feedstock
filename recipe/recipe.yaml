@@ -92,9 +92,6 @@ requirements:
         - if: use_cuda
           then:
             - pytorch * [build=cuda*]
-            - if: aarch64
-              then:
-                - libcublas-dev
   host:
     - python
     - jinja2 >=3.1.6
