@@ -148,7 +148,10 @@ requirements:
   - tiktoken >=0.6.0
   - tokenizers >=0.19.1
   - tqdm
-  - transformers >=4.51.0
+  # Newer versions of transformers already define the aimv2 config, so we can't use it for now
+  # See https://github.com/vllm-project/vllm-ascend/issues/2046#issuecomment-3123639101 for more details.
+  # The required fix: https://github.com/vllm-project/vllm/commit/3fc964433a84bad785d9d0656fd56195462321b8
+  - transformers >=4.51.0,<4.54.0
   - typing_extensions >=4.10
   - uvicorn-standard
   - watchfiles
