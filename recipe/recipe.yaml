@@ -3,6 +3,8 @@ context:
   pytorch_version: 2.6.0
   use_cuda: ${{ cuda_compiler_version != "None" }}
   vllm_target_device: ${{ "cuda" if use_cuda else "cpu" }}
+  cuda_build_string: cuda_${{ cuda_compiler_version | version_to_buildstring }}
+  string_prefix: ${{ cuda_build_string if cuda_compiler_version != "None" else "cpu_" }}
   is_cross_compiling: ${{ build_platform != target_platform }}
 
 package:
@@ -21,6 +23,9 @@ source:
   - if: is_cross_compiling
     then:
     - patches/0004-Factor-in-the-cmake-args-when-building-e.g.-for-cros.patch
+  - if: aarch64
+    then:
+    - patches/0005-Configure-build-to-target-aarch64-even-though-CMake-.patch
   target_directory: vllm
 # Needs to be vendored because vLLM uses a modified version of the flash attention primitives that supports KV-caching.
 - url: https://github.com/vllm-project/flash-attention/archive/d637d8927a35922ce6f6c0dff6dd3f765ed71f3c.tar.gz
@@ -28,7 +33,8 @@ source:
   target_directory: flash-attention
 
 build:
-  number: 3
+  number: 4
+  string: ${{ string_prefix }}py${{ python | version_to_buildstring }}h${{ hash }}_${{ build_number }}
   script:
     - sed -i.bak 's/set(TORCH_SUPPORTED_VERSION_CUDA "2.4.0")/set(TORCH_SUPPORTED_VERSION_CUDA "${{ pytorch_version }}")/g' flash-attention/CMakeLists.txt
     - export VLLM_FLASH_ATTN_SRC_DIR=$SRC_DIR/flash-attention
@@ -38,6 +44,10 @@ build:
     - ln -s $PREFIX/include $SRC_DIR/vllm/third_party/NVTX/c/include
     - export VERBOSE=1
     - export VLLM_TARGET_DEVICE=${{ vllm_target_device }}
+    # CMake is unable to automatically locate the Python include dir for aarch64 for some reason
+    - if: aarch64
+      then:
+      - export CMAKE_ARGS="$CMAKE_ARGS -DPython_INCLUDE_DIR="$(python -c 'import sysconfig; print(sysconfig.get_path("include"))')""
     - ${{ PYTHON }} -m pip install . -vv --no-build-isolation --no-deps
 
   python:
@@ -48,7 +58,9 @@ build:
     - win
     - osx and x86_64
     # conda-forge torchaudio dropped support for Python 3.9 (llvmlite fix only available for Python >=3.10)
-    - match(python, "<3.10")
+    # Also, we don't have Python 3.13 support until https://github.com/vllm-project/vllm/commit/21dce80ea96bcf033d159c0f952fb274567b315c is released
+    - match(python, "<3.10") or match(python, ">=3.13")
+    - aarch64 and use_cuda  # Still have issues locating CUDA for the aarch64 build
     # - match(python, "!=3.12")  # Until the build works
 
 requirements:
@@ -136,7 +148,10 @@ requirements:
   - tiktoken >=0.6.0
   - tokenizers >=0.19.1
   - tqdm
-  - transformers >=4.51.0
+  # Newer versions of transformers already define the aimv2 config, so we can't use it for now
+  # See https://github.com/vllm-project/vllm-ascend/issues/2046#issuecomment-3123639101 for more details.
+  # The required fix: https://github.com/vllm-project/vllm/commit/3fc964433a84bad785d9d0656fd56195462321b8
+  - transformers >=4.51.0,<4.54.0
   - typing_extensions >=4.10
   - uvicorn-standard
   - watchfiles
