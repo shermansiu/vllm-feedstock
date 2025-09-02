@@ -91,6 +91,9 @@ requirements:
         - pytorch ==${{ pytorch_version }}
         - if: use_cuda
           then:
+            - if: aarch64
+              then:
+                - libcublas-dev
             - pytorch * [build=cuda*]
   host:
     - python
