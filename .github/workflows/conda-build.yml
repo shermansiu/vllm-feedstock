@@ -21,10 +21,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - CONFIG: linux_64_cuda_compiler_version12.9python3.12.____cpython
+          - CONFIG: linux_64_cuda_compiler_version12.8python3.12.____cpython
             UPLOAD_PACKAGES: True
             os: ubuntu
-            runs_on: ['cirun-openstack-cpu-4xlarge--${{ github.run_id }}-linux_64_cuda_compiler_version12.9python_h33f95ef4', 'linux', 'x64', 'self-hosted']
+            runs_on: ['cirun-openstack-cpu-4xlarge--${{ github.run_id }}-linux_64_cuda_compiler_version12.8python_hd3d24322', 'linux', 'x64', 'self-hosted']
             DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
     steps:
 
