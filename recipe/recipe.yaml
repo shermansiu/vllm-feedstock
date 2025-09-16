@@ -66,9 +66,8 @@ build:
   skip:
     - win
     - osx and x86_64
-    # conda-forge torchaudio dropped support for Python 3.9 (llvmlite fix only available for Python >=3.10)
     # Also, we don't have Python 3.13 support until https://github.com/vllm-project/vllm/commit/21dce80ea96bcf033d159c0f952fb274567b315c is released
-    # - match(python, "<3.10") or match(python, ">=3.13")
+    - match(python, ">=3.13")
     - aarch64 and use_cuda  # Still have issues locating CUDA for the aarch64 build
     # - not use_cuda  # Just build CUDA for now
     # - match(python, "!=3.12")  # Until all the builds succeed
