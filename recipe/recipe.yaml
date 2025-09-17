@@ -72,8 +72,9 @@ build:
     - osx and x86_64
     # We don't have Python 3.13 support until https://github.com/vllm-project/vllm/commit/21dce80ea96bcf033d159c0f952fb274567b315c is released
     - match(python, ">=3.13")
-    # - not use_cuda  # Just build CUDA for now
-    # - match(python, "!=3.10")  # Until all the builds succeed
+    - not use_cuda  # Just build CUDA for now
+    - not aarch64  # Just build for AArch64 for now
+    - match(python, "!=3.10")  # Until all the builds succeed
 
 requirements:
   build:
