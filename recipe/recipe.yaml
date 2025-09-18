@@ -56,8 +56,9 @@ build:
     # CMake is unable to automatically locate the Python include dir for aarch64 for some reason
     - if: aarch64
       then:
-        - export CUDA_HOME="$BUILD_PREFIX"
-        - export CMAKE_ARGS="$CMAKE_ARGS -DPython_INCLUDE_DIR="$(python -c 'import sysconfig; print(sysconfig.get_path("include"))')" -DCUDA_TOOLKIT_ROOT_DIR=$CUDA_HOME -DCUDA_CUDART_LIBRARY=$CUDA_HOME/lib/libcudart.so.12"
+        # We also need to manually specify the CUDA toolkit root because FindCUDA.cmake is broken for cross-compiling otherwise
+        # We need to specify CUDA_TOOLKIT_ROOT instead of CUDA_TOOLKIT_ROOT_DIR because both CUDA_TOOLKIT_ROOT_DIR and CUDA_TOOLKIT_TARGET_DIR are derived from CUDA_TOOLKIT_ROOT in cross-compiling mode
+        - export CMAKE_ARGS="$CMAKE_ARGS -DPython_INCLUDE_DIR="$(python -c 'import sysconfig; print(sysconfig.get_path("include"))')" -DCUDA_TOOLKIT_ROOT=$BUILD_PREFIX"
         # We can't install libcublas-dev to the build dependencies because it will target linux-64 instead of linux-aarch64
         # So, we manually copy the cuBLAS headers from the host depenencies instead
         - find $PREFIX/targets/sbsa-linux/include/ -type f -name 'cublas*.h' -exec cp -navps '{}' $BUILD_PREFIX/targets/sbsa-linux/include/ ';'
